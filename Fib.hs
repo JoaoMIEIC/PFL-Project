@@ -22,7 +22,6 @@ fibLista a = listCreate a !! (fromIntegral a)
 fibInf :: (Integral a) => [a]
 fibInf = 0 : 1 : zipWith (+) fibInf (tail fibInf)
 
-
 ------------------------------------------------------------------------------------
 -- Cálculo do elemento de índice n da lista infinit a de fibonacci numbers
 
