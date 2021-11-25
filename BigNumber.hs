@@ -2,7 +2,7 @@
 
 type BigNumber = (Bool, [Int]) 
 
--- Por exemplo -12455 => (True, [-1,2,4,5,5])
+-- Por exemplo -12455 => (True, [-1,2,4,5,5]) 
 
 -- Aplica a função read após aplicar a função (:"") que torna cada char numa string, a cada um dos elementos da string str (lista de chars) 
 -- criando listas individuais de cada um dos números e depois aplica map para criar uma lista de todos os dígitos de str.
@@ -21,6 +21,11 @@ output bigNum@(signal, bignum) | signal = '-' : concat(map show bignum)
 
 
 
+checkBiggestNum :: BigNumber -> BigNumber-> Bool
+checkBiggestNum bigNum1 bigNum2 | (read (output bigNum1) :: Int) > (read (output bigNum2) :: Int) = True
+                          | otherwise = False
+                          
+ 
 -- Aplic
 sumBefore :: [Int] -> [Int] -> Int -> [Int]   
 sumBefore [] list carry 
@@ -37,10 +42,39 @@ sumBefore (x:xs) (y:ys) c = lastDigit : sumBefore xs ys rest
               rest = div sumNum 10       -- Encontra o resto da divisão inteira de sumNumb por 10, p.e: div 15 10 = 1
 
 
+-- Aplic
+subBefore :: [Int] -> [Int] -> Int -> [Int]   
+subBefore [] list carry 
+        | carry == 0 = list
+        | otherwise = subBefore [carry] list 0
+
+subBefore list [] carry
+        | carry == 0 = list
+        | otherwise = subBefore list [carry] 0
+
+subBefore (x:xs) (y:ys) c = lastDigit : subBefore xs ys rest
+        where sumNum = x - y - c
+              lastDigit = mod (10 - abs(sumNum)) 10  -- Encontra o último dígito de sumNum, p.e: mod 15 10 = 5 
+              rest | sumNum < 0 =  1      -- Encontra o resto da divisão inteira de sumNumb por 10, p.e: div 15 10 = 1
+                   | otherwise = 0
+
 
 somaBN :: BigNumber -> BigNumber -> BigNumber
 somaBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) |  signal1 && signal2 = (signal1, reverse(sumBefore (reverse bignum1) (reverse bignum2) 0))
+                                                             |  (signal1 /= signal2) && length bignum1 > length bignum2 = (signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0))
+                                                             |  (signal1 /= signal2) && length bignum2 > length bignum1 = (signal2, reverse(subBefore (reverse bignum2) (reverse bignum1) 0))
+                                                             |  (signal1 /= signal2) && (checkBiggestNum bigNum1 bigNum2) = (signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0))
+                                                             |  otherwise = (signal2, reverse(subBefore (reverse bignum2) (reverse bignum1) 0))
+
+
+
+
+subBN :: BigNumber -> BigNumber -> BigNumber
+subBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) |  signal1 && signal2 = (signal1, reverse(sumBefore (reverse bignum1) (reverse bignum2) 0))
+                                                             |  (signal1 /= signal2) && length bignum1 > length bignum2 = (signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0))
+                                                             |  (signal1 /= signal2) && length bignum2 > length bignum1 = (signal2, reverse(subBefore (reverse bignum2) (reverse bignum1) 0))
                                                              |  otherwise = (signal1, reverse(sumBefore (reverse bignum1) (reverse bignum2) 0))
+
 
 
 
