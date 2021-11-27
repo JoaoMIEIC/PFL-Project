@@ -102,3 +102,16 @@ subBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) |  signal1 && signal
 
 -- subBN :: BigNumber -> BigNumber -> BigNumber
 -- subBN  bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) | signal1 && signal2 = (signal1, reverse(sumBefore (reverse bignum1) (reverse bignum2) 0))
+
+mulAux :: BigNumber -> BigNumber -> BigNumber
+
+mulAux nb1@(_, []) nb2@(_,_) = (False, [0])                 
+
+mulAux nb1@(signal1, x:xs) nb2@(signal2, ys) = somaBN (False, (map (x*) ys)) (mulAux (False,xs) (False, (ys++ [0])))
+
+mulBN :: BigNumber -> BigNumber -> BigNumber
+
+mulBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) = bigN3
+        where
+                bigN3 = mulAux bigNum1 bigNum2
+
