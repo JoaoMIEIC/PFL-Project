@@ -60,11 +60,10 @@ subBefore (x:xs) (y:ys) c = lastDigit : subBefore xs ys rest
 
 
 somaBN :: BigNumber -> BigNumber -> BigNumber
-somaBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) |  signal1 && signal2 = (signal1, reverse(sumBefore (reverse bignum1) (reverse bignum2) 0))
-                                                             |  (signal1 /= signal2) && length bignum1 > length bignum2 = (signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0))
+somaBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) |  (signal1 /= signal2) && length bignum1 > length bignum2 = (signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0))
                                                              |  (signal1 /= signal2) && length bignum2 > length bignum1 = (signal2, reverse(subBefore (reverse bignum2) (reverse bignum1) 0))
                                                              |  (signal1 /= signal2) && (checkBiggestNum bigNum1 bigNum2) = (signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0))
-                                                             |  otherwise = (signal2, reverse(sumBefore (reverse bignum2) (reverse bignum1) 0))
+                                                             |  otherwise = (signal1, reverse(sumBefore (reverse bignum1) (reverse bignum2) 0))
 
 
 
@@ -115,4 +114,16 @@ mulBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) = bigN3
         where
                 ret@(signal3, bignum3) = mulAux (signal1, reverse bignum1) bigNum2
                 bigN3 = (signal1 || signal2, bignum3)
+
+
+-- divAux :: BigNumber -> BigNumber -> BigNumber
+
+-- divAux bignum1@(signal1, num1) bignum2@(signal2, num2) | (checkBiggestNum bignum1 bignum2) = somaBN (False, [1]) (divAux (False, (subBN (False, num1) (False, num2) bignum2)))
+--                                                        | otherwise = (False, [0])
+
+-- divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
+
+-- divBN bignum1@(signal1, num1) bignum2@(signal2, num2) = bignum3
+--         where
+--                 ret
 
