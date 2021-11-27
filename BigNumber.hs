@@ -64,7 +64,7 @@ somaBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) |  signal1 && signa
                                                              |  (signal1 /= signal2) && length bignum1 > length bignum2 = (signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0))
                                                              |  (signal1 /= signal2) && length bignum2 > length bignum1 = (signal2, reverse(subBefore (reverse bignum2) (reverse bignum1) 0))
                                                              |  (signal1 /= signal2) && (checkBiggestNum bigNum1 bigNum2) = (signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0))
-                                                             |  otherwise = (signal2, reverse(subBefore (reverse bignum2) (reverse bignum1) 0))
+                                                             |  otherwise = (signal2, reverse(sumBefore (reverse bignum2) (reverse bignum1) 0))
 
 
 
@@ -113,5 +113,6 @@ mulBN :: BigNumber -> BigNumber -> BigNumber
 
 mulBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) = bigN3
         where
-                bigN3 = mulAux bigNum1 bigNum2
+                ret@(signal3, bignum3) = mulAux (signal1, reverse bignum1) bigNum2
+                bigN3 = (signal1 || signal2, bignum3)
 
