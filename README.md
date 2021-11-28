@@ -7,7 +7,11 @@ Contextualização e explicação da resolução dos exercícios do Trabalho Pr�
 ## **1.1. fibRec**
 
 Implementação do cálculo recursivo do enésimo número de Fibonacci.
-Foram definidos dois casos base quando o número é 0 ou 1 e depois simplesmente é realizada a soma recursiva de: $$fibRec(number - 1) + fibRec(number - 2)$$ até atingirem os casos base.
+Foram definidos dois casos base quando o número é 0 ou 1 e depois simplesmente é realizada a soma recursiva de: 
+```math 
+                    fibRec(number - 1) + fibRec(number - 2)
+```
+ até atingirem os casos base.
 
 ## **1.2. fibLista**
 
@@ -15,12 +19,17 @@ Implementação do cálculo do enésimo número de fibonacci de uma lista de res
 Primeiro é realizado o cálculo da lista de resultados parciais (lista x). 
 
 Enquanto o comprimento da lista não for maior do que o índice do elemento que queremos calcular ('a') 
-**$$until(\ x\ -> length \ x > (fromIntegral \ a))$$**
+```math 
+                    until( \x -> length x > (fromIntegral a))
+```
 é criada uma lista que começa com os elementos [0,1] e vai acrescentando a essa lista a soma do último elemento da lista atual com o seu penúltimo elemento.
-
-**$$x ++ [\ last \ x + last\  (init\  x)\ ]$$**
-
-**Exemplo:**  $$[0,1] -> [0,1] ++ [1+0] -> [0,1,1] -> [0,1,1] ...$$
+```math 
+                    x ++ [last x + last (init x)]
+```
+**Exemplo:**  
+```math
+                    [0,1] -> [0,1] ++ [1+0] -> [0,1,1] -> [0,1,1] ...
+```
 
 
 ## **1.3. fibListaInfinita**
@@ -30,24 +39,26 @@ Implementação do cálculo do enésimo número de Fibonacci de uma lista de nú
 A lista de números de Fibonacci infinita é calculada criando uma lista com os casos base, 0 e 1 que são pre-appended e depois com recurso à função zipWith que vai combinar as duas listas elemento a elemento usando a função (+) de soma. 
 
 Assim assumindo que temos uma lista infinita de Fibonacci numbers, iremos ter a lista:
-
-$$[ 1, 1, 2, 3,  5,  8, 13, .... ]$$
-
+```math
+                    [ 1, 1, 2, 3,  5,  8, 13, .... ]
+```
 cuja tail é:
-
- $$[ 1, 2, 3, 5,  8, 13, 21, .... ]$$
-
+```math
+                    [ 1, 2, 3, 5,  8, 13, 21, .... ]
+```
  resultando em ...
 
-
- $$ [ 1, 1, 2, 3,  5,  8, 13, .... ]
-+  [ 1, 2, 3, 5,  8, 13, 21, .... ]
-=  [ 2, 3, 5, 8, 13, 21, 34, .... ]$$
+```math
+                    [ 1, 1, 2, 3,  5,  8, 13, .... ]
+                    +  [ 1, 2, 3, 5,  8, 13, 21, .... ]
+                    =  [ 2, 3, 5, 8, 13, 21, 34, .... ]
+```
 
 
 No fim para conseguirmos obter o elemento de índice n, apenas temos de aplicar (!!) à lista infinita. 
- 
- $$fibInf \ !! \ (fromIntegral \ n)$$
+ ```math
+                    fibInf !! (fromIntegral n)
+ ```
 ## **2.1. BigNumber**
 
 Implementação do type BigNumber, constituído por um Bool e uma lista de Int's. O Bool guarda o sinal do número, True se for positivo e False se for negativo, e a lista guarda os dígitos do número.
@@ -74,25 +85,31 @@ Esta função tem como objetivo a soma de dois BigNumbers.
 
 Para ajudar na realização desta soma são utilizadas duas funções auxiliares. Estas funções recebem como argumentos duas listas de dígitos que pertencem correspondentemente a cada um dos BigNumbers e um Int que é designado por carry (número que deve ser passado para a próxima iteração da soma se a soma de dois números for superior a 10), sendo inicialmente igual a 0.
 
-$$6 \ +\ 8 \ = \ 14 \ =>\  4 \ , \ carry \  = \ 1$$
-
-$$6 \ +\ 3 \ = \ 9 \ =>\  9 \ , \ carry \  = \ 0$$
+```math
+                    6 + 8  = 14 => 4 , carry = 1
+```
+```math
+                    6 + 3 = 9 => 9 , carry = 0
+```
 
 A primeira função auxiliar sumBefore realiza a soma das listas de dígitos de dois BigNumbers que tenham sinais iguais. Estas listas são passadas como argumento, recorrendo ao uso da função reverse pois a soma de duas listas dos  dígitos de um número torna-se mais fácil quando estão ordenados pela ordem inversa.
 
 123 + 49 = 172 é representado por:
-
-$$[3, 2, 1] + [9, 4] = [2, 7, 1]$$
+```math
+                    [3, 2, 1] + [9, 4] = [2, 7, 1]
+```
 Esta função soma as duas listas recorrendo a um algoritmo bastante semelhante à soma de dois números manualmente. Soma os dois números correspondentes de cada lista mais o carry e chama recursivamente a função até serem atingidos os casos base (uma das listas, ou as duas ficam vazias).
 
 A segunda função auxiliar subBefore ajuda na soma de dois BigNumbers que tenham sinais opostos pois a soma de dois números de sinais opostos é a subtração do menor número ao maior, sendo preservado o sinal do número que for maior. Para verificar qual número é superior é utilizada outra função auxiliar checkBiggestNum.
 
 O algoritmo utilizado nesta função é o mesmo que na sumBefore apenas sendo diferente no que toca ao cálculo do dígito resultante e do carry.
+```math
+                    2 - 4 = -2 => 8 , carry = 1
+```
 
-$$2 \ -\ 4 \ = \ -2 \ => 8 \ , \ carry \  = \ 1$$
-
-$$5 \ -\ 4 \ = \ 1 \ => 1 \ , \ carry \  = \ 0$$
-
+```math
+                    5 - 4 = 1 => 1  , carry = 0
+```
 ### **Casos de teste:**
 
 ![](images/somaBN.png)
@@ -123,7 +140,10 @@ O sinal do resultado final é obtido através de um "AND" lógico dos sinais dos
 
 Esta função divide 2 BigNumbers chamando a função auxiliar "divAux" com os mesmos argumentos da "divBN", exceto os sinais que são considerados como positivos para facilitar o cálculo.
 O "divAux" é uma função recursiva que em cada iteração subtrai ao argumento "BigNum1" (numerador) o "BigNum2" (denominador), parando quando o numerador for menor que o denominador. O número de iterações é somado para obter o quociente, consequentemente o resto é obtido através da fórmula: 
-$$resto \ = \ numerador \ -\  denominador\ *\ quociente$$
+
+```math
+                    resto = numerador - denominador * quociente 
+```
 
 O sinal do resultado final é obtido através de um "AND" lógico dos sinais dos argumentos.
 
@@ -139,26 +159,31 @@ Implementação do cálculo recursivo do enésimo número de Fibonacci utilizand
 
 A implementação é exatamente igual à função normal, porém todas as operações aritméticas realizadas e a sintaxe foram adaptadas de forma a serem compatíveis com os BigNumbers.
 
-$$ + \ \rightarrow somaBN$$
+```math
+                            + -> somaBN
 
-$$ - \ \rightarrow subBN$$
+                            - -> subBN
 
-$$ 1 \ \rightarrow (True, [1])$$
+                            1 -> (True, [1])
 
-$$etc...$$
+                                etc...
+```
+
 ## **3.2. fibListaBN**
 
 Implementação do cálculo do enésimo número de fibonacci de uma lista de resultados parciais utilizando BigNumbers.
 
 A implementação é exatamente igual à função normal, porém todas as operações aritméticas realizadas e a sintaxe foram adaptadas de forma a serem compatíveis com os BigNumbers.
 
-$$ + \ \rightarrow somaBN$$
+```math
+                            + -> somaBN
 
-$$ - \ \rightarrow subBN$$
+                            - -> subBN
 
-$$ 1 \ \rightarrow (True, [1])$$
+                            1 -> (True, [1])
 
-$$etc...$$
+                                etc...
+```
 
 ## **3.3. fibListaInfinitaBN**
 
@@ -167,13 +192,15 @@ Implementação do cálculo do enésimo número de Fibonacci de uma lista de nú
 
 A implementação é exatamente igual à função normal, porém todas as operações aritméticas realizadas e a sintaxe foram adaptadas de forma a serem compatíveis com os BigNumbers.
 
-$$ + \ \rightarrow somaBN$$
+```math
+                            + -> somaBN
 
-$$ - \ \rightarrow subBN$$
+                            - -> subBN
 
-$$ 1 \ \rightarrow (True, [1])$$
+                            1 -> (True, [1])
 
-$$etc...$$
+                                etc...
+```
 
 ---
 
@@ -184,8 +211,9 @@ Os tipos **Int**, **Integer** e **BigNumber** variam principalmente na quantidad
 Assim, podemos distinguir os **Int** dos **Integer** pois ao contrário dos **Integer** que podem representar números arbitrariamente grandes, permitindo a representação de números tão grandes quanto a memória do dispositivo permitir, os **Int** têm um limite definido. 
 
 Este limite no standard da linguagem é igual a: 
-
-$$-2\ ^{29}\  to\  (2\ ^ {29} - 1)$$
+```math
+                -2 ^ {29} to (2 ^ {29} - 1)
+```
 
 No que toca aos **BigNumbers**, estes à semelhança dos **Integer** também podem representar números arbitrariamente grandes, sendo apenas restringidos pela memória do dispositivo pois representam números através de listas dos seus dígitos e listas podem ser infinitas (não têm limites de tamanho na sua representação).
 
