@@ -3,9 +3,10 @@ import BigNumber
 -- 1.1. Cálculo recursivo do enésimo elemento de uma sequência de fibonacci
 
 fibRec :: (Integral a) => a -> a
-fibRec 0 = 0
-fibRec 1 = 1
-fibRec number = fibRec(number - 1) + fibRec(number - 2)  
+fibRec number | number == 0 = 0
+              | number == 1 = 1
+              | otherwise = fibRec(number - 1) + fibRec(number - 2) 
+
 
 ------------------------------------------------------------------------------------
 

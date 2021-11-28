@@ -179,7 +179,17 @@ $$etc...$$
 
 ## **4. Comparação**
 
+Os tipos **Int**, **Integer** e **BigNumber** variam principalmente na quantidade de número que conseguem representam. 
 
+Assim, podemos distinguir os **Int** dos **Integer** pois ao contrário dos **Integer** que podem representar números arbitrariamente grandes, permitindo a representação de números tão grandes quanto a memória do dispositivo permitir, os **Int** têm um limite definido. 
+
+Este limite no standard da linguagem é igual a: 
+
+$$-2\ ^{29}\  to\  (2\ ^ {29} - 1)$$
+
+No que toca aos **BigNumbers**, estes à semelhança dos **Integer** também podem representar números arbitrariamente grandes, sendo apenas restringidos pela memória do dispositivo pois representam números através de listas dos seus dígitos e listas podem ser infinitas (não têm limites de tamanho na sua representação).
+
+Apesar dos **Int** conseguirem efetuar operações muito mais rápidas do que os **Integer** ou  **BigNumber**, esta restrição de terem um limite atribuído pode causar problemas de overflow ou underflow, levando a bugs indesejados.
 
 ---
 
