@@ -20,7 +20,7 @@ removeLeadingZeros :: BigNumber -> BigNumber
 removeLeadingZeros bigNum1@(signal1, x:xs) | (x == 0) && (length (x:xs) > 1) = removeLeadingZeros (signal1, xs)
                                            | otherwise = (signal1, x:xs)
 
--- Verifica se o valor absoluto do bigNum1 é maior que o valor absoluto do bigNum2. Retorna True se abs(bigNum1) >= abs(bigNum2), otherwise False.
+-- Verifica se o valor absoluto do bigNum1 é maior que o valor absoluto do bigNum2. Retorna True se abs(bigNum1) >= abs(bigNum2), False otherwise.
 
 checkBiggestNum :: BigNumber -> BigNumber-> Bool
 checkBiggestNum bigNum1 bigNum2 = abs((read (output bigNum1) :: Int)) >= abs((read (output bigNum2) :: Int))
@@ -28,7 +28,7 @@ checkBiggestNum bigNum1 bigNum2 = abs((read (output bigNum1) :: Int)) >= abs((re
 
 ------------------------------------------------------------------------------------
 
--- 2.2. Converção de string para BigNumber
+-- 2.2. Conversão de string para BigNumber
 
 scanner :: String -> BigNumber
 
@@ -53,7 +53,8 @@ output bigNum@(signal, bignum) | bignum == [] = ""
 ------------------------------------------------------------------------------------
                           
  
--- Aplic
+-- Função auxiliar que realiza a soma aritmética de duas listas de inteiros
+
 sumBefore :: [Int] -> [Int] -> Int -> [Int]   
 sumBefore [] list carry 
         | carry == 0 = list
@@ -69,7 +70,8 @@ sumBefore (x:xs) (y:ys) c = lastDigit : sumBefore xs ys rest
               rest = div sumNum 10       -- Encontra o resto da divisão inteira de sumNumb por 10, p.e: div 15 10 = 1
 
 
--- Aplic
+-- Função auxiliar que realiza a subtração de duas listas de inteiros
+
 subBefore :: [Int] -> [Int] -> Int -> [Int]   
 subBefore [] list carry 
         | carry == 0 = list
@@ -81,24 +83,31 @@ subBefore list [] carry
 
 subBefore (x:xs) (y:ys) c = lastDigit : subBefore xs ys rest
         where sumNum = x - y - c
-              lastDigit | sumNum < 0 = mod (10 - abs(sumNum)) 10  -- Encontra o último dígito de sumNum, p.e: mod 15 10 = 5 
-                        | otherwise = sumNum
-              rest | sumNum < 0 =  1      -- Encontra o resto da divisão inteira de sumNumb por 10, p.e: div 15 10 = 1
-                   | otherwise = 0
+              lastDigit | sumNum < 0 = mod (10 - abs(sumNum)) 10  -- Se sumNum < 0, p.e: 2-4 = -2, porém queremos que apareça o número 8 logo aplicamos: mod (10 - abs(sumNum)) 10
+                        | otherwise = sumNum 
+              rest | sumNum < 0 =  1      -- Se sumNum for negativo, o carry é 1, p.e: 2-4 = -2 => 8 e carry = 1
+                   | otherwise = 0      
 
+------------------------------------------------------------------------------------
+
+-- 2.4 Soma de BigNumbers
 
 somaBN :: BigNumber -> BigNumber -> BigNumber
-somaBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) |  (signal1 /= signal2) && checkBiggestNum bigNum1 bigNum2 = removeLeadingZeros ((signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0)))
+somaBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) |  bignum1 == [] = bigNum2
+                                                             |  bignum2 == [] = bigNum1
+                                                             |  (signal1 /= signal2) && checkBiggestNum bigNum1 bigNum2 = removeLeadingZeros ((signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0)))
                                                              |  (signal1 /= signal2) && checkBiggestNum bigNum2 bigNum1 = removeLeadingZeros ((signal2, reverse(subBefore (reverse bignum2) (reverse bignum1) 0)))
                                                              |  otherwise = removeLeadingZeros ((signal1, reverse(sumBefore (reverse bignum1) (reverse bignum2) 0)))
 
 
+-- 2.5 Subtração de BigNumbers
 
 subBN :: BigNumber -> BigNumber -> BigNumber
-subBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2)  |  (signal1 /= not signal2) && (checkBiggestNum bigNum1 bigNum2) = removeLeadingZeros ((signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0)))
-                                                             |  (signal1 /= not signal2) && (checkBiggestNum bigNum2 bigNum1) = removeLeadingZeros ((signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0)))
+subBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2)  |  bignum2 == [] = bigNum1
+                                                             |  bignum1 == [] = (not signal2, bignum2)
+                                                             |  (signal1 /= not signal2) && (checkBiggestNum bigNum1 bigNum2) = removeLeadingZeros ((signal1, reverse(subBefore (reverse bignum1) (reverse bignum2) 0)))
+                                                             |  (signal1 /= not signal2) && (checkBiggestNum bigNum2 bigNum1) = removeLeadingZeros ((not signal1, reverse(subBefore (reverse bignum2) (reverse bignum1) 0)))
                                                              |  otherwise = removeLeadingZeros ((signal1, reverse(sumBefore (reverse bignum1) (reverse bignum2) 0)))
-
 
 ------------------------------------------------------------------------------------
 
@@ -117,10 +126,11 @@ mulAux nb1@(signal1, x:xs) nb2@(signal2, ys) = somaBN (True, (map (x*) ys)) (mul
 
 mulBN :: BigNumber -> BigNumber -> BigNumber
 
-mulBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) = bigN3
+mulBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) = (signal, bignum3)
         where
                 ret@(signal3, bignum3) = mulAux (True, reverse bignum1) (True, bignum2)
-                bigN3 = (signal1 == signal2, bignum3)
+                signal  | bignum3 == [0] = True 
+                        | otherwise = (signal1 == signal2)
 
 
 ------------------------------------------------------------------------------------

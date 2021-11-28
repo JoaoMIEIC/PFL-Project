@@ -1,6 +1,6 @@
 import BigNumber
 
--- 1.1. Cálculo recursivo do n elemento de uma sequência de fibonacci
+-- 1.1. Cálculo recursivo do enésimo elemento de uma sequência de fibonacci
 
 fibRec :: (Integral a) => a -> a
 fibRec 0 = 0
@@ -9,7 +9,7 @@ fibRec number = fibRec(number - 1) + fibRec(number - 2)
 
 ------------------------------------------------------------------------------------
 
--- 3.1. Cálculo recursivo do n elemento de uma sequência de fibonacci usando BigNumbers
+-- 3.1. Cálculo recursivo do enésimo elemento de uma sequência de fibonacci usando BigNumbers
 
 fibRecBN :: BigNumber -> BigNumber 
 fibRecBN bigNum@(True, [0]) = (True, [0])
