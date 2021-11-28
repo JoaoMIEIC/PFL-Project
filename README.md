@@ -24,7 +24,7 @@ Enquanto o comprimento da lista não for maior do que o índice do elemento que 
 ```
 é criada uma lista que começa com os elementos [0,1] e vai acrescentando a essa lista a soma do último elemento da lista atual com o seu penúltimo elemento.
 ```math 
-                    x ++ [last x + last (init x)]
+                    (\x -> x ++ [last x + last (init x)]) [0,1]
 ```
 **Exemplo:**  
 ```math
@@ -40,17 +40,17 @@ A lista de números de Fibonacci infinita é calculada criando uma lista com os 
 
 Assim assumindo que temos uma lista infinita de Fibonacci numbers, iremos ter a lista:
 ```math
-                    [ 1, 1, 2, 3,  5,  8, 13, .... ]
+                    [ 1, 1, 2, 3, 5, 8, 13, .... ]
 ```
 cuja tail é:
 ```math
-                    [ 1, 2, 3, 5,  8, 13, 21, .... ]
+                    [ 1, 2, 3, 5, 8, 13, 21, .... ]
 ```
  resultando em ...
 
 ```math
-                    [ 1, 1, 2, 3,  5,  8, 13, .... ]
-                    +  [ 1, 2, 3, 5,  8, 13, 21, .... ]
+                       [ 1, 1, 2, 3,  5, 8, 13, .... ]
+                    +  [ 1, 2, 3, 5, 8, 13, 21, .... ]
                     =  [ 2, 3, 5, 8, 13, 21, 34, .... ]
 ```
 
@@ -67,7 +67,7 @@ Implementação do type BigNumber, constituído por um Bool e uma lista de Int's
 
 Esta função converte uma string num BigNumber. Aplica a função read após aplicar a função (:"") que torna cada char numa string, a cada um dos elementos da string str (lista de chars) criando listas individuais de cada um dos números e depois aplica map para criar uma lista de todos os dígitos de str.
 
-### **Casos de teste**
+### **Casos de teste:**
 
 ![](images/scanner.png)
 
@@ -75,7 +75,7 @@ Esta função converte uma string num BigNumber. Aplica a função read após ap
 
 Esta função converte um BigNumber numa string. Aplica a função show que converte um elemento lista de dígitos numa string a todos os elementos da lista de dígitos de bigNum através da função map e no fim utiliza a função concat para juntar todos as strings.
 
-### **Casos de teste**
+### **Casos de teste:**
 
 ![](images/output.png)
 

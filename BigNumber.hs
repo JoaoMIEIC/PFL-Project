@@ -159,7 +159,6 @@ divBN bigNum1@(signal1, bignum1) bigNum2@(signal2, bignum2) = (quociente, resto)
 
 -- 5. Divisão de BigNumbers segura
 
-
 -- Função que calcula a divisão entre 2 BigNumbers e impede divisões por 0 em compile-time
 
 safeDivBN :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
